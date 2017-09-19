@@ -2,7 +2,7 @@ import numpy as np
 from quaternion import Quaternion
 
 class Cell:
-    def __init__(self, name_ = "", pos_ = [0,0,0], ori_ = Quaternion(1,0,0,0)):
+    def __init__(self, name_ = "", pos_ = [0,0,0], ori_ = Quaternion([1,0,0,0])):
         self.pos = np.array(pos_)
         self.ori = np.array(ori_)
         self.name = name_

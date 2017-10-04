@@ -15,7 +15,13 @@ class TestCube2x2(unittest.TestCase):
 
     def test_R(self):
         print(self.cube2x2.GetObservation())
-        self.cube2x2.rotateR()
+        self.cube2x2.rotate('R')
+        print(self.cube2x2.GetObservation())
+        self.cube2x2.rotate('r')
+        self.cube2x2.rotate('F')
+        self.cube2x2.rotate('f')
+        self.cube2x2.rotate('U')
+        self.cube2x2.rotate('u')
         print(self.cube2x2.GetObservation())
 
 

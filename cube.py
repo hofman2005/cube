@@ -19,12 +19,22 @@ class Cell:
 
     def Rotate(self, quaternion, rotation_matrix):
         self.pos = np.dot(self.pos, rotation_matrix.transpose())
+        self.pos = np.rint(self.pos)
         self.ori = quaternion * self.ori
+
+        newRep = {}
+        rotationMatrix = self.ori.ToRotationMatrix().transpose()
+        for key in self.rep.keys():
+            value = self.rep[key]
+            key = np.dot(np.array(key), rotationMatrix).astype(int)
+            key = tuple(key)
+            newRep[key] = value
+        self.rep = newRep
 
     def AddColor(self, pos, color):
         self.rep[pos] = color
 
-    def GetColor(pos):
+    def GetColor(self, pos):
         return self.rep[pos]
 
 class Cube(Cell):
@@ -73,7 +83,24 @@ class Cube2x2(Cube):
                     layer.append(self.posMap[pos])
         return layer
 
+    def GetObservation(self):
+        obs = []
+        for cube in self.findLayer(x=1):
+            obs.append(cube.GetColor((1,0,0)).name)
+        for cube in self.findLayer(x=-1):
+            obs.append(cube.GetColor((-1,0,0)).name)
+        for cube in self.findLayer(y=1):
+            obs.append(cube.GetColor((0,1,0)).name)
+        for cube in self.findLayer(y=-1):
+            obs.append(cube.GetColor((0,-1,0)).name)
+        for cube in self.findLayer(z=1):
+            obs.append(cube.GetColor((0,0,1)).name)
+        for cube in self.findLayer(z=-1):
+            obs.append(cube.GetColor((0,0,-1)).name)
+        return obs
+
     def rotateR(self):
         layer = self.findLayer(x=1)
         for cell in layer:
             cell.Rotate(self.Rq, self.Rm)
+            self.posMap[tuple(cell.pos)] = cell

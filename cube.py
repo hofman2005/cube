@@ -1,11 +1,31 @@
 import numpy as np
+from enum import Enum
 from quaternion import Quaternion
+
+class Color(Enum):
+    R=1
+    Y=2
+    W=3
+    B=4
+    G=5
+    O=6
 
 class Cell:
     def __init__(self, name_ = "", pos_ = [0,0,0], ori_ = Quaternion([1,0,0,0])):
         self.pos = np.array(pos_)
-        self.ori = np.array(ori_)
+        self.ori = ori_
         self.name = name_
+        self.rep = {}
+
+    def Rotate(self, quaternion, rotation_matrix):
+        self.pos = np.dot(self.pos, rotation_matrix.transpose())
+        self.ori = quaternion * self.ori
+
+    def AddColor(pos, color):
+        self.rep[pos] = color
+
+    def GetColor(pos):
+        return self.rep[pos]
 
 class Cube(Cell):
     def __init__(self):
@@ -21,6 +41,22 @@ class Cube2x2(Cube):
                     pos = (x, y, z)
                     self.cells.append(Cell("", pos))
                     self.posMap[pos] = self.cells[len(self.cells)-1]
+
+        self.Rq = Quaternion([1,0,0,-90], False)
+        self.Rm = self.Rq.ToRotationMatrix()
+
+        for cube in self.findLayer(x=1):
+            cube.AddColor((1,0,0), Color.Y)
+        for cube in self.findLayer(x=-1):
+            cube.AddColor((-1,0,0), Color.W)
+        for cube in self.findLayer(y=1):
+            cube.AddColor((0,1,0), Color.O)
+        for cube in self.findLayer(y=-1):
+            cube.AddColor((0,-1,0), Color.R)
+        for cube in self.findLayer(z=1):
+            cube.AddColor((0,0,1), Color.B)
+        for cube in self.findLayer(z=-1):
+            cube.AddColor((0,0,-1), Color.G)
 
     def findLayer(self, x=None, y=None, z=None):
         layer = []
@@ -38,4 +74,6 @@ class Cube2x2(Cube):
         return layer
 
     def rotateR(self):
-        layer = findLayer(x=1)
+        layer = self.findLayer(x=1)
+        for cell in layer:
+            cell.Rotate(self.Rq, self.Rm)

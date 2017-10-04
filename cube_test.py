@@ -12,8 +12,17 @@ class TestCube2x2(unittest.TestCase):
 
     def test_findLayer(self):
         layer = self.cube2x2.findLayer(x=1)
-        for item in layer:
-            print(item.pos)
+
+    def test_R(self):
+        for item in self.cube2x2.cells:
+            print('pos: ', item.pos)
+            print('ori: ', item.ori.v)
+            print('\n')
+        self.cube2x2.rotateR()
+        for item in self.cube2x2.cells:
+            print('pos: ', item.pos)
+            print('ori: ', item.ori.v)
+            print('\n')
 
 if __name__ == "__main__":
     unittest.main()

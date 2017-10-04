@@ -23,10 +23,10 @@ class Quaternion:
         return np.array_equal(self.v, other.v)
 
     def __mul__(self, other):
-        s = sum(self.v * other.v * np.array([1, -1, -1, -1]))
-        i = sum(self.v * np.array([other.v[1], other.v[0], other.v[3], -other.v[2]]))
-        j = sum(self.v * np.array([other.v[2], -other.v[3], other.v[0], other.v[1]]))
-        k = sum(self.v * np.array([other.v[3], other.v[2], -other.v[1], other.v[0]]))
+        s = np.sum(self.v * other.v * np.array([1, -1, -1, -1]))
+        i = np.sum(self.v * np.array([other.v[1], other.v[0], other.v[3], -other.v[2]]))
+        j = np.sum(self.v * np.array([other.v[2], -other.v[3], other.v[0], other.v[1]]))
+        k = np.sum(self.v * np.array([other.v[3], other.v[2], -other.v[1], other.v[0]]))
 
         return Quaternion([s, i, j, k])
 

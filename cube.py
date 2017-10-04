@@ -114,6 +114,21 @@ class Cube2x2(Cube):
             obs.append(cube.GetColor((0,0,-1)).name)
         return obs
 
+    def IsDone(self):
+        if len(set([o.GetColor((1,0,0)) for o in self.findLayer(x=1)])) != 1:
+            return False
+        if len(set([o.GetColor((-1,0,0)) for o in self.findLayer(x=-1)])) != 1:
+            return False
+        if len(set([o.GetColor((0,1,0)) for o in self.findLayer(y=1)])) != 1:
+            return False
+        if len(set([o.GetColor((0,-1,0)) for o in self.findLayer(y=-1)])) != 1:
+            return False
+        if len(set([o.GetColor((0,0,1)) for o in self.findLayer(z=1)])) != 1:
+            return False
+        if len(set([o.GetColor((0,0,-1)) for o in self.findLayer(z=-1)])) != 1:
+            return False
+        return True
+
     def rotate(self, action):
         if action not in self.RotationQuaternion:
             return False

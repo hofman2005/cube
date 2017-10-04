@@ -13,7 +13,7 @@ class TestCube2x2(unittest.TestCase):
     def test_findLayer(self):
         layer = self.cube2x2.findLayer(x=1)
 
-    def test_R(self):
+    def test_Rotate(self):
         print(self.cube2x2.GetObservation())
         self.cube2x2.rotate('R')
         print(self.cube2x2.GetObservation())
@@ -23,6 +23,13 @@ class TestCube2x2(unittest.TestCase):
         self.cube2x2.rotate('U')
         self.cube2x2.rotate('u')
         print(self.cube2x2.GetObservation())
+
+    def test_IsDone(self):
+        self.assertTrue(self.cube2x2.IsDone())
+        self.cube2x2.rotate('R')
+        self.assertFalse(self.cube2x2.IsDone())
+        self.cube2x2.rotate('r')
+        self.assertTrue(self.cube2x2.IsDone())
 
 
 if __name__ == "__main__":

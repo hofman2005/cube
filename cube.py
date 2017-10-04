@@ -21,7 +21,7 @@ class Cell:
         self.pos = np.dot(self.pos, rotation_matrix.transpose())
         self.ori = quaternion * self.ori
 
-    def AddColor(pos, color):
+    def AddColor(self, pos, color):
         self.rep[pos] = color
 
     def GetColor(pos):

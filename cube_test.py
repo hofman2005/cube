@@ -24,6 +24,19 @@ class TestCube2x2(unittest.TestCase):
         self.cube2x2.rotate('u')
         print(self.cube2x2.GetObservation())
 
+    def test_Rotate_2(self):
+        print(self.cube2x2.GetObservation())
+        self.cube2x2.rotate('R')
+        print(self.cube2x2.GetObservation())
+        self.cube2x2.rotate('l')
+        print(self.cube2x2.IsDone())
+        print(self.cube2x2.GetObservation())
+        self.cube2x2.rotate('F')
+        print(self.cube2x2.GetObservation())
+        self.cube2x2.rotate('b')
+        print(self.cube2x2.GetObservation())
+        print(self.cube2x2.IsDone())
+
     def test_IsDone(self):
         self.assertTrue(self.cube2x2.IsDone())
         self.cube2x2.rotate('R')

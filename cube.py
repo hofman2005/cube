@@ -3,12 +3,12 @@ from enum import Enum
 from quaternion import Quaternion
 
 class Color(Enum):
-    R=1
-    Y=2
-    W=3
-    B=4
-    G=5
-    O=6
+    R=0
+    Y=1
+    W=2
+    B=3
+    G=4
+    O=5
 
 class Cell:
     def __init__(self, name_ = "", pos_ = [0,0,0], ori_ = Quaternion([1,0,0,0])):
@@ -101,17 +101,17 @@ class Cube2x2(Cube):
     def GetObservation(self):
         obs = []
         for cube in self.findLayer(x=1):
-            obs.append(cube.GetColor((1,0,0)).name)
+            obs.append(cube.GetColor((1,0,0)).value)
         for cube in self.findLayer(x=-1):
-            obs.append(cube.GetColor((-1,0,0)).name)
+            obs.append(cube.GetColor((-1,0,0)).value)
         for cube in self.findLayer(y=1):
-            obs.append(cube.GetColor((0,1,0)).name)
+            obs.append(cube.GetColor((0,1,0)).value)
         for cube in self.findLayer(y=-1):
-            obs.append(cube.GetColor((0,-1,0)).name)
+            obs.append(cube.GetColor((0,-1,0)).value)
         for cube in self.findLayer(z=1):
-            obs.append(cube.GetColor((0,0,1)).name)
+            obs.append(cube.GetColor((0,0,1)).value)
         for cube in self.findLayer(z=-1):
-            obs.append(cube.GetColor((0,0,-1)).name)
+            obs.append(cube.GetColor((0,0,-1)).value)
         return obs
 
     def IsDone(self):
@@ -140,7 +140,7 @@ class Cube2x2(Cube):
         if action in ('F', 'f'):
             layer = self.findLayer(y=-1)
         if action in ('B', 'b'):
-            layer = self.findLayer(y=-1)
+            layer = self.findLayer(y=1)
         if action in ('U', 'u'):
             layer = self.findLayer(z=1)
         if action in ('D', 'd'):

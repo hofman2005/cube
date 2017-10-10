@@ -49,40 +49,6 @@ def Train():
     cube = Cube2x2()
     agent = Agent(0.00001)
 
-    cube_action_map = {
-            0: 'R',
-            1: 'r',
-            2: 'L',
-            3: 'l',
-            4: 'F',
-            5: 'f',
-            6: 'B',
-            7: 'b',
-            8: 'U',
-            9: 'u',
-            10: 'D',
-            11: 'd',
-            }
-    cube_action_to_id_map = {}
-    for key in cube_action_map:
-        value = cube_action_map[key]
-        cube_action_to_id_map[value] = key
-
-    cube_reverse_action_map = {
-            'R': 'r',
-            'r': 'R',
-            'L': 'l',
-            'l': 'L',
-            'F': 'f',
-            'f': 'F',
-            'B': 'b',
-            'b': 'B',
-            'U': 'u',
-            'u': 'U',
-            'D': 'd',
-            'd': 'D',
-            }
-
     save_path = './cube2x2_solve_sess'
     history_map_path = './history_map'
     init = tf.global_variables_initializer()
@@ -109,15 +75,14 @@ def Train():
                 mmax = 1000
             else:
                 mmax = 5
-            mmax = 0
             for m in range(mmax):
                 history = []
                 cube = Cube2x2()
                 for j in range(max_ep):
                     obs = cube.GetObservation()
-                    action = np.random.randint(0, len(cube_action_map), 1)[0]
+                    action = np.random.randint(0, cube.GetNumOfActions(), 1)[0]
  
-                    cube.rotate(cube_action_map[action])
+                    cube.rotate(cube.GetActionById(action))
                     done = cube.IsDone()
 
                     if done:
@@ -135,14 +100,14 @@ def Train():
                     new_history = []
                     for item in reversed(history):
                         obs = cube.GetObservation()
-                        action = cube_action_map[item[1]]
-                        action = cube_reverse_action_map[action]
+                        action = cube.GetActionById(item[1])
+                        action = cube.GetReverseAction(action)
                         cube.rotate(action)
                         if cube.IsDone():
                             reward = 1.0
                         else:
                             reward = 0.0
-                        new_history.append([obs, cube_action_to_id_map[action], reward])
+                        new_history.append([obs, cube.GetIdForAction(action), reward])
                     history = new_history
 
                     if not cube.IsDone():

@@ -16,15 +16,9 @@ class TestSolver(unittest.TestCase):
         with tf.Session() as sess:
             sess.run(init)
             obs = self.cube.GetObservation()
-            # print('res: ', sess.run(self.agent.state,
-            #     feed_dict={self.agent.state_in: [obs, obs]}))
-            # res = sess.run(self.agent.output, feed_dict={self.agent.state_in:
-            #     [obs]})
-            # print('res: ', res)
             routput = tf.gather(tf.reshape(self.agent.output, [-1]),
                     self.agent.chosen_action)
-            res = sess.run([self.agent.chosen_action, routput,
-                self.agent.encode_output], feed_dict={self.agent.state_in:
+            res = sess.run([self.agent.chosen_action, routput], feed_dict={self.agent.state_in:
                 [obs, obs]})
 
             print('res: ', res)

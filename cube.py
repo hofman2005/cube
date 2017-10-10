@@ -83,6 +83,34 @@ class Cube2x2(Cube):
         for key in self.RotationQuaternion.keys():
             self.RotationMatrix[key] = self.RotationQuaternion[key].ToRotationMatrix()
 
+        self.actions = [
+                'R', 'r',
+                'L', 'l',
+                'F', 'f',
+                'B', 'b',
+                'U', 'u',
+                'D', 'd',
+                ]
+
+        self.action_to_id_map = {}
+        for i in range(len(self.actions)):
+            self.action_to_id_map[self.actions[i]] = i
+
+        self.reverse_actions = {
+            'R': 'r',
+            'r': 'R',
+            'L': 'l',
+            'l': 'L',
+            'F': 'f',
+            'f': 'F',
+            'B': 'b',
+            'b': 'B',
+            'U': 'u',
+            'u': 'U',
+            'D': 'd',
+            'd': 'D',
+            }
+
     def findLayer(self, x=None, y=None, z=None):
         layer = []
         for i in (-1,1):
@@ -151,3 +179,18 @@ class Cube2x2(Cube):
             self.posMap[tuple(cell.pos)] = cell
 
         return True
+
+    def GetActions(self):
+        return self.actions
+
+    def GetNumOfActions(self):
+        return len(self.actions)
+    
+    def GetReverseAction(self, action):
+        return self.reverse_actions[action]
+
+    def GetActionById(self, action_id):
+        return self.actions[action_id]
+
+    def GetIdForAction(self, action):
+        return self.action_to_id_map[action]
